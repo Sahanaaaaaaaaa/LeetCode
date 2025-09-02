@@ -1,0 +1,20 @@
+class Solution:
+    def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+        st=[]
+        for curr in asteroids:
+            # condition for when collision is happening
+            while st and st[-1]>0 and curr<0:
+                # now check which one will survive collision
+                if st[-1] < -curr:
+                    # TOS asteroid is eliminated, so pop and keep checking with previous
+                    st.pop()
+                    continue
+                elif st[-1] == -curr:
+                    # both are eliminated
+                    st.pop()
+                # when TOS asteroid is greater, curr is eliminated (so don’t append)
+                break
+            # when no collision or curr survives
+            else:
+                st.append(curr)
+        return st

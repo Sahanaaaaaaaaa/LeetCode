@@ -1,0 +1,23 @@
+This is the psuedo code:
+
+Initialize empty stack
+
+For each asteroid in asteroids:
+    While stack is not empty AND last asteroid in stack is moving right (positive) 
+          AND current asteroid is moving left (negative):
+
+        If absolute value of current > top of stack:
+            Pop the stack (TOS destroyed)
+            Continue checking with new TOS
+
+        Else if absolute value of current == top of stack:
+            Pop the stack (both destroyed)
+            Stop checking (curr also destroyed)
+
+        Else (top of stack is bigger):
+            Stop checking (curr destroyed)
+
+    If no collision happened inside while:
+        Push current asteroid to stack
+
+Return stack
