@@ -1,0 +1,33 @@
+Basically print alternate 0s and based on if next one is even or odd, release that correspoding lock
+
+PsuedoCode:
+initialize zero_lock = free
+initialize odd_lock = locked
+initialize even_lock = locked
+
+function zero():
+    for i from 1 to n:
+        acquire zero_lock
+        print(0)
+        if i is odd:
+            release odd_lock
+        else:
+            release even_lock
+
+function odd():
+    for i from 1 to n step 2:
+        acquire odd_lock
+        print(i)
+        release zero_lock
+
+function even():
+    for i from 2 to n step 2:
+        acquire even_lock
+        print(i)
+        release zero_lock
+
+Few mistakes made:
+- Name conflict → you used self.zero both for the lock and the method.
+- Wrong variable in condition → used n+1%2 instead of (i+1) % 2.
+- Printing wrong value → printNumber(n) instead of printNumber(i) in even and odd.
+- Range off-by-one → used range(…, self.n, …) instead of range(…, self.n+1, …) (last number skipped).

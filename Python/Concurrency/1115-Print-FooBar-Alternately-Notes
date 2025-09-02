@@ -1,0 +1,53 @@
+### 🔹 What is a Lock?
+
+* A **Lock** is like a **gate** that can be **locked (acquire)** or **unlocked (release)**.
+* If a thread tries to acquire a lock that’s already locked, it will **wait** until the lock is released.
+* This is how we prevent threads from running at the wrong time or out of order.
+
+---
+
+### 🔹 How it works in `FooBar`
+
+#### Initialization
+
+```python
+self.l1 = Lock()
+self.l2 = Lock()
+self.l2.acquire()
+```
+
+* `l1` starts **free**, so `foo()` can run first.
+* `l2` is **locked**, so `bar()` is forced to wait.
+
+---
+
+#### foo()
+
+```python
+self.l1.acquire()   # waits until foo's turn
+printFoo()          # prints "foo"
+self.l2.release()   # unlocks l2 → lets bar() run
+```
+
+#### bar()
+
+```python
+self.l2.acquire()   # waits until foo releases l2
+printBar()          # prints "bar"
+self.l1.release()   # unlocks l1 → lets foo() run again
+```
+
+---
+
+### 🔹 Flow (for n=2)
+
+1. `foo` acquires `l1` → prints `"foo"` → releases `l2`.
+2. `bar` acquires `l2` → prints `"bar"` → releases `l1`.
+3. Cycle repeats until both have printed `n` times.
+
+---
+
+👉 So **locks enforce alternation**:
+
+* `foo → bar → foo → bar …`
+
