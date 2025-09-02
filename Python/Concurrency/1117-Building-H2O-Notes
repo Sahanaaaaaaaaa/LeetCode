@@ -1,0 +1,65 @@
+### 🔹 Goal
+
+* Synchronize threads so that **exactly 2 hydrogen + 1 oxygen** form each water molecule.
+* Output: `"HHO"` (order of H’s and O may vary, but always 2H + 1O together).
+
+---
+
+### 🔹 Code Idea
+
+```python
+self.sem_h = Semaphore(2)     # allow max 2 hydrogens
+self.sem_o = Semaphore(1)     # allow max 1 oxygen
+self.bar_assembling = Barrier(3)  # wait until 3 threads arrive
+```
+
+---
+
+### 🔹 How Hydrogen Works
+
+```python
+with self.sem_h:              # only 2 hydrogens allowed
+    self.bar_assembling.wait()  # block until 3 threads ready
+    releaseHydrogen()           # print "H"
+```
+
+✔ Prints **once per hydrogen thread** → 2 times per molecule.
+
+---
+
+### 🔹 How Oxygen Works
+
+```python
+with self.sem_o:              # only 1 oxygen allowed
+    self.bar_assembling.wait()  # wait for 3 total
+    releaseOxygen()             # print "O"
+```
+
+✔ Prints **once per oxygen thread** → 1 time per molecule.
+
+---
+
+### 🔹 Barrier Role
+
+* Ensures **all 3 (2H + 1O) must reach before printing starts**.
+* Once barrier is full (3 threads), they all continue → printing **H, H, O**.
+* Then barrier resets for the next molecule.
+
+---
+
+### 🔹 Key Flow per Molecule
+
+1. Two hydrogen threads acquire `sem_h`.
+2. One oxygen thread acquires `sem_o`.
+3. All 3 wait at `barrier.wait()`.
+4. Barrier releases → each thread calls its print.
+5. Together they print `"HHO"`.
+
+---
+
+✅ Output example:
+
+```
+HHOHHOHHO...
+```
+
