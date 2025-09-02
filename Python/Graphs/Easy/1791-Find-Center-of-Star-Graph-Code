@@ -1,0 +1,6 @@
+class Solution:
+    def findCenter(self, g: List[List[int]]) -> int:
+        if(g[0][0]==g[1][1]or g[0][0]==g[1][0]):
+            return g[0][0]
+        else:
+            return g[0][1]

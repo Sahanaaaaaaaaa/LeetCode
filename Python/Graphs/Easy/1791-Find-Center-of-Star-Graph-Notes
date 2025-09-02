@@ -1,0 +1,13 @@
+Example: g = [[1,2],[2,3],[4,2]]
+
+The trick:
+In a star graph, the center appears in every edge.
+So if you just look at the first two edges, the common node between them is the center.
+
+Step by step:
+
+Check if g[0][0] (first node of first edge) is equal to either node in the second edge (g[1][0] or g[1][1]).
+
+If yes → it’s the center.
+
+Otherwise, the other node in the first edge (g[0][1]) must be the center.        
